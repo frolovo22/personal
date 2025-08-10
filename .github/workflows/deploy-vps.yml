@@ -1,0 +1,63 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      RELEASE_DIR: /var/www/portfolio/releases/${{ github.run_id }}
+      CURRENT_LINK: /var/www/portfolio/current
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # Копируем dist на сервер (в релизную папку)
+      - name: Copy files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "dist/*"
+          target: "${{ env.RELEASE_DIR }}"
+          strip_components: 1
+
+      # Переключаем симлинк и перезагружаем nginx
+      - name: Activate release
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            set -e
+            # создаём релизный каталог, если вдруг не создался
+            mkdir -p "${{ env.RELEASE_DIR }}"
+            # если current уже есть — запомним прошлый путь (на случай отката)
+            if [ -L "${{ env.CURRENT_LINK }}" ]; then
+              PREV=$(readlink -f "${{ env.CURRENT_LINK }}")
+              echo "Previous: $PREV"
+            fi
+            ln -sfn "${{ env.RELEASE_DIR }}" "${{ env.CURRENT_LINK }}"
+            sudo nginx -t && sudo systemctl reload nginx
+            echo "Activated: $(readlink -f '${{ env.CURRENT_LINK }}')"
