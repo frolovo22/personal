@@ -5,7 +5,7 @@ import resume from '../data/resume.js'
 export default function Resume() {
     const overviewText = resume.overview || resume.summary
 
-    const SectionHeader = ({ children }) => (
+    const SectionHeader = ({children}) => (
         <div
             style={{
                 fontSize: '1.3rem',
@@ -43,13 +43,50 @@ export default function Resume() {
                     </div>
                 </div>
                 <Button className="primary"
-                    onClick={() => {
-                        window.open(
-                            'https://drive.google.com/uc?export=download&id=1Zz2i2olsVK11fF1HN37v-NrYzXCUoy5M',
-                            '_blank'
-                        );
-                    }}
-                >⬇️ Download PDF</Button>
+                        onClick={() => {
+                            window.open(
+                                'https://drive.google.com/uc?export=download&id=1Zz2i2olsVK11fF1HN37v-NrYzXCUoy5M',
+                                '_blank'
+                            );
+                        }}
+
+                        style={{
+                            background: 'linear-gradient(90deg, #66d9ff, #a29bfe)',
+                            color: '#0a0b0f',
+                            fontWeight: 600,
+                            padding: '10px 20px',
+                            borderRadius: '12px',
+                            border: 'none',
+                            boxShadow: '0 4px 12px rgba(102, 217, 255, 0.4)',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease'
+                        }}
+
+                        onMouseEnter={e => {
+                            e.target.style.boxShadow = '0 6px 16px rgba(102, 217, 255, 0.6)';
+                            e.target.style.transform = 'translateY(-2px)';
+                        }}
+                        onMouseLeave={e => {
+                            e.target.style.boxShadow = '0 4px 12px rgba(102, 217, 255, 0.4)';
+                            e.target.style.transform = 'translateY(0)';
+                        }}
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Download PDF</Button>
             </div>
 
             {/* Overview */}
