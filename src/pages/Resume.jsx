@@ -5,6 +5,22 @@ import resume from '../data/resume.js'
 export default function Resume() {
     const overviewText = resume.overview || resume.summary
 
+    const SectionHeader = ({ children }) => (
+        <div
+            style={{
+                fontSize: '1.3rem',
+                fontWeight: 700,
+                background: 'linear-gradient(90deg, #66d9ff, #e6f7ff)',
+                WebkitBackgroundClip: 'text',
+                color: 'transparent',
+                marginBottom: '12px',
+                letterSpacing: '0.3px'
+            }}
+        >
+            {children}
+        </div>
+    );
+
     return (
         <div className="grid" style={{gap: 24}}>
 
@@ -39,18 +55,7 @@ export default function Resume() {
             {/* Overview */}
             {overviewText && (
                 <section style={{padding: '8px 0'}}>
-                    <div
-                        style={{
-                            fontSize: '1.4rem',
-                            fontWeight: 700,
-                            background: 'linear-gradient(90deg, #00e0ff, #9b5cff)',
-                            WebkitBackgroundClip: 'text',
-                            color: 'transparent',
-                            marginBottom: '12px'
-                        }}
-                    >
-                        Overview
-                    </div>
+                    <SectionHeader>Overview</SectionHeader>
                     <p style={{fontSize: '1.05rem', lineHeight: 1.6, margin: 0, color: '#e2e8f0'}}>
                         {overviewText}
                     </p>
@@ -60,18 +65,7 @@ export default function Resume() {
             {/* Skills */}
             {Array.isArray(resume.skills) && resume.skills.length > 0 && (
                 <section style={{padding: '8px 0'}}>
-                    <div
-                        style={{
-                            fontSize: '1.4rem',
-                            fontWeight: 700,
-                            background: 'linear-gradient(90deg, #00e0ff, #9b5cff)',
-                            WebkitBackgroundClip: 'text',
-                            color: 'transparent',
-                            marginBottom: '12px'
-                        }}
-                    >
-                        Skills
-                    </div>
+                    <SectionHeader>Skills</SectionHeader>
                     <div style={{display: 'flex', flexWrap: 'wrap', gap: 8}}>
                         {resume.skills.map((s) => (
                             <Badge key={s}>{s}</Badge>
@@ -82,7 +76,7 @@ export default function Resume() {
 
             {/* Experience */}
             <section>
-                <div className="h2" style={{marginBottom: 8}}>Professional Experience</div>
+                <SectionHeader>Professional Experience</SectionHeader>
                 <div className="grid" style={{gap: 16}}>
                     {resume.experience.map((exp, idx) => (
                         <Card key={idx}>
@@ -107,7 +101,7 @@ export default function Resume() {
             {/* Education */}
             {Array.isArray(resume.education) && resume.education.length > 0 && (
                 <section>
-                    <div className="h2" style={{marginBottom: 8}}>Education</div>
+                    <SectionHeader>Education</SectionHeader>
                     <ul className="list">
                         {resume.education.map((e, i) => (<li key={i}>{e.place} — {e.degree}</li>))}
                     </ul>
@@ -117,7 +111,7 @@ export default function Resume() {
             {/* Languages */}
             {Array.isArray(resume.languages) && resume.languages.length > 0 && (
                 <section>
-                    <div className="h2" style={{marginBottom: 8}}>Languages</div>
+                    <SectionHeader>Languages</SectionHeader>
                     <div style={{display: 'flex', flexWrap: 'wrap', gap: 8}}>
                         {resume.languages.map(l => <Badge key={l}>{l}</Badge>)}
                     </div>
