@@ -66,6 +66,15 @@ export default function GlobalStyles() {
         opacity:.2; /* softened grid */
         pointer-events:none
       }
+      /* иконки в контактах не обрезаются */
+      /* contacts row */
+       .contact { display:flex; align-items:center; gap:8px; line-height:1; }
+       .contact svg{
+         width:16px; height:16px;
+         overflow:visible;          /* не обрезать stroke за viewBox */
+         display:inline-block;
+         vertical-align:middle;
+       }
     `}</style>
     )
 }

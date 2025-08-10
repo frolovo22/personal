@@ -5,6 +5,7 @@ const resume = {
     phone: "+7 915 401 4466",
     email: "frolov.alexey.22@gmail.com",
     linkedin: "https://www.linkedin.com/in/aleksei-frolov-13703b170/",
+    github: "https://github.com/frolovo22",
 
     overview: `Backend engineer with over 10 years of professional experience 
   in designing and delivering high-performance, distributed, and scalable systems. 
